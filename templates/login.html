@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <style>
+    * { items-align: center;}
+      #login{
+	  position: absolute;
+	  top: 10%;
+	  right: 50%;
+	  width: 300pt;
+	  padding: 5px 1% 5px 1%;
+	 
+	  background: rgb(247, 247, 247);
+	  border: 1px solid rgba(147, 184, 189,0.8);
+	  box-shadow:
+              0pt 2px 5px rgba(105, 108, 109,  0.7),
+              0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+	  border-radius: 5px;
+	  text-align: center;
+      };
+       
+      #intext {
+	  width: 10%;
+	  border-radius: 50px;
+	  font-size: 20pt;
+      };
+      
+    </style>
+  </head>
+  <body>
+    <form action='/login' method='post'>
+    <div id="login">
+      <div>
+		<h1>Вход в систему</h1>
+		{% if error %}
+		{{ error }}
+		{% endif %}
+      </div>
+      <div>  <!-- id="intext"> -->
+	<input name="first_name"
+	       value="Фамилия" style="width:100%"
+	       maxlength="40">
+      </div>
+      <div>  <!-- id="intext"> -->
+	<input name="second_name"
+	       value="Имя" style="width:100%"
+	       maxlength="40">
+      </div>
+      <div>
+	<select name="year">
+	  <option selected disabled>Год поступления</option>
+	  {% for year in years %}
+	  <option value="{{year}}">{{year}}</option>
+	  {% endfor %}
+	</select>
+	<select name="group">
+	  <option selected disabled>Номер группы</option>
+	  {% for grp in range(1,7) %}
+	  <option value="{{grp}}">{{grp}}</option>
+	  {% endfor %}
+	</select>
+      </div>
+      <div>
+	<input type="submit" value="Начать!">
+      </div>
+      </form>
+    </div>
+  </body>
+</html>
