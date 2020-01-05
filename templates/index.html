@@ -1,44 +1,55 @@
 <html>
-    <head>
-    <title>Зачет!!!</title>
+  <head>
+    <title>Портал для проверки знаний</title>
     <style>
-      {% if font %}
       @font-face {
 	  font-family: "EvilTitcher";	  
 	  src: url('/static/{{font}}.ttf');
 	  font-style: normal;
       }
-      * {
+      * { font-size: 14pt; }
+      .answer {
 	  font-family: "EvilTitcher";
-	  font-size: 10pt;
-      }	  
-
-      {% else %}	  
-      @font-face {
+	  font-size: 14pt;
+	  padding: 5pt 5pt 5pt 5pt;
+      }
+      .question {
 	  font-family: "EvilTitcher";
-	  
-	  src: url('/static/cour.ttf');
-	  font-style: normal;
+	  font-size: 14pt;
       }
-      * {
-      	  font-family: "EvilTitcher";
-      	  font-size: 10pt;
-      }
-      {% endif %}      
     </style>
-    <body>
-      {% if quest %}
-      <form action="/answer/{{ quest.id }}" method='post'>
-	<div class='question'>{{ quest.text }}</div>
-	{% if answers %}
-	{% for ans in answers %}
-	<div class='answer'>
-	  <input name='answer' type='radio' value='{{ans.code}}'>{{ans.text}}</input>
-	</div>
-	{% endfor %}
-	{% endif %}
-	<input type='submit' value='Ответ'>
-      </form>
+    <script>
+      function timer(){
+	  var sec = 30;
+	  var timer = setInterval(function(){
+              timer= document.getElementById('Timer')
+	      timer.innerHTML='00:'+sec;
+              sec--;
+              if (sec < 0) {
+		  window.location.replace("/answer/{{quest.id}}");
+		  window.location.href = "/answer/{{quest.id}}";
+              }
+	  }, 1000);
+      }
+    </script>
+  </head>
+  <body onload='timer();'>
+    {% if quest %}
+    <form action="/answer/{{ quest.id }}" method='post'>
+      <div class='question'>{{ quest.text }}</div>
+      {% if answers %}
+      {% for ans in answers %}
+      <div class='answer'>
+	<input name='answer' type='radio' value='{{ans.code}}'>{{ans.text}}</input>
+      </div>
+      {% endfor %}
       {% endif %}
-    </body>
+      <input type='submit' value='Ответ'>
+    </form>
+    {% if count %}
+    Осталось вопросов: {{count}}
+    {% endif %}
+    {% endif %}
+    <p id="Timer">00:30</p>
+  </body>
 </html>

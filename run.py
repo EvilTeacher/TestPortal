@@ -163,8 +163,8 @@ def login():
                'year':int(form['year']),
                'time': datetime.datetime.now()}
     StudId = create_user(student)
-
-    if StudId is None: redirect('/login',code=301)
+    if StudId is None: return redirect('/login')
+    
     res = redirect('/')
     res.set_cookie('StudId', StudId, max_age=60*60)
     return res
@@ -174,10 +174,11 @@ def login():
 def answer(qid):
     StudId = request.cookies.get('StudId')
     if not StudId: return redirect('/login')
-    if request.method != 'POST' : return redirect('/')
-    form = dict(request.form)
-    if 'answer' not in form : return redirect('/')
-    answer = form['answer']
+    answer = "TIME_OUT!!!"
+    if request.method == 'POST' :
+        form = dict(request.form)
+        if 'answer' not in form : return redirect('/')
+        answer = form['answer']
     val = answer[0] if type(answer) == list else answer
 
     with db.connect(**db_config) as conn:
