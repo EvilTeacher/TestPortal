@@ -1,42 +1,44 @@
 <html>
-  <head>
+    <head>
     <title>Зачет!!!</title>
     <style>
+      {% if font %}
       @font-face {
-	  font-family: "EvilTitcher";
-	  src: url('/static/2.ttf');
+	  font-family: "EvilTitcher";	  
+	  src: url('/static/{{font}}.ttf');
 	  font-style: normal;
       }
-      /* * { */
-      /* 	  font-family: "EvilTitcher"; */
-      /* 	  font-size: 10pt; */
-      /* } */
-    </style>
-    <script>
-      function timer(){
-	  var sec = 30;
-	  var timer = setInterval(function(){
-              document.getElementById('safeTimerDisplay').innerHTML='00:'+sec;
-              sec--;
-              if (sec < 0) {
-		  window.location.replace("/answer/{{ quest.id }}");
-              }
-	  }, 1000);
+      * {
+	  font-family: "EvilTitcher";
+	  font-size: 10pt;
+      }	  
+
+      {% else %}	  
+      @font-face {
+	  font-family: "EvilTitcher";
+	  
+	  src: url('/static/cour.ttf');
+	  font-style: normal;
       }
-    </script>
-  </head>
-  <body onload='timer();'>
-    {% if quest %}
-    <form action="/answer/{{ quest.id }}" method='post'>
-      <div class='question'>{{ quest.text }}</div>
-	  {% for ans in answers %}
-      <div class='answer'>
-		<input name='answer' type='radio' value='{{ans.code}}'>{{ans.text}}</input>
-      </div>
-	  {% endfor %}
-      <input type='submit' value='Ответ'>
-    </form>
-    {% endif %}
-    <p id="safeTimerDisplay">00:30</p>
-  </body>
+      * {
+      	  font-family: "EvilTitcher";
+      	  font-size: 10pt;
+      }
+      {% endif %}      
+    </style>
+    <body>
+      {% if quest %}
+      <form action="/answer/{{ quest.id }}" method='post'>
+	<div class='question'>{{ quest.text }}</div>
+	{% if answers %}
+	{% for ans in answers %}
+	<div class='answer'>
+	  <input name='answer' type='radio' value='{{ans.code}}'>{{ans.text}}</input>
+	</div>
+	{% endfor %}
+	{% endif %}
+	<input type='submit' value='Ответ'>
+      </form>
+      {% endif %}
+    </body>
 </html>
